@@ -10,7 +10,7 @@ namespace Jni
 
     JNIEnv* GetEnv() {
         JNIEnv* env;
-        jint res = jvm->GetEnv((void**)(&env), JNI_VERSION_1_8);
+        jint res = jvm->GetEnv((void**)(&env), JNI_VERSION_1_6);
         assert(res == JNI_OK);
         return env;
     }

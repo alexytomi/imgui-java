@@ -97,6 +97,28 @@ case "$VTYPE" in
         fi
         echo "Universal library created at /tmp/imgui/dst/libimgui-java64.dylib successfully"
         ;;
+    android)
+        echo "Running Gradle task for Android..."
+        ./gradlew imgui-binding:generateLibs -Denvs=android -Dfreetype=false
+        if [ $? -ne 0 ]; then
+            echo "Gradle task for Android failed"
+            exit 1
+        fi
+
+        echo "Checking if the generated SO files exists..."
+        check_file_exists /tmp/imgui/libs/arm64-v8a/libimgui-java.so
+        check_file_exists /tmp/imgui/libs/armeabi-v7a/libimgui-java.so
+        check_file_exists /tmp/imgui/libs/x86/libimgui-java.so
+        check_file_exists /tmp/imgui/libs/x86_64/libimgui-java.so
+
+        echo "Copying the generated SO files to the destination directory..."
+        cp -r /tmp/imgui/libs/* /tmp/imgui/dst
+        if [ $? -ne 0 ]; then
+            echo "Failed to copy SO files to /tmp/imgui/dst/libimgui-java64.so"
+            exit 1
+        fi
+        echo "SO files copied to /tmp/imgui/dst/<abi> successfully"
+        ;;
     *)
         echo "Unknown vendor type: $VTYPE"
         exit 1
