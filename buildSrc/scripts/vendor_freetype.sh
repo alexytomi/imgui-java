@@ -98,6 +98,9 @@ case "$VTYPE" in
         fi
         echo "Universal library created at lib/libfreetype.a"
         ;;
+    android)
+        # Skip freetype building for now because freetype repo doesn't seem to support android builds.
+        ;;
     *)
         echo "Unknown vendor type: $VTYPE"
         exit 1

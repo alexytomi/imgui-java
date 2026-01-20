@@ -54,6 +54,8 @@ jobs:
           - os: ubuntu-latest
             type: linux
           - os: ubuntu-latest
+            type: android
+          - os: ubuntu-latest
             type: windows
           - os: macos-latest
             type: macos
@@ -78,6 +80,7 @@ jobs:
 
       - name: Build
         run: |
+          export NDK_HOME=$ANDROID_NDK_HOME
           chmod +x buildSrc/scripts/build.sh
           buildSrc/scripts/build.sh ${{ matrix.target.type }}
 

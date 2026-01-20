@@ -30,6 +30,7 @@ class GenerateLibs extends DefaultTask {
     private final String[] buildEnvs = System.getProperty('envs')?.split(',')
     private final boolean forWindows = buildEnvs?.contains('windows')
     private final boolean forLinux = buildEnvs?.contains('linux')
+    private final boolean forAndroid = buildEnvs?.contains('android')
     private final boolean forMac = buildEnvs?.contains('macos')
     private final boolean forMacArm64 = buildEnvs?.contains('macosarm64')
 
@@ -108,6 +109,12 @@ class GenerateLibs extends DefaultTask {
             buildTargets += linux64
         }
 
+        if (forAndroid) {
+            buildTargets += new BuildTarget(Os.Android, Architecture.Bitness._32, new String[] {"**/*.c"}, new String[0],
+                new String[] {"**/*.cpp"}, new String[0], new String[0], "", "-O2 -Wall -D__ANDROID__", "-O2 -Wall -D__ANDROID__",
+                "-lm -Wl,-z,max-page-size=0x4000 -stdlib=libc++ -lc++_static");
+        }
+
         if (forMac) {
             buildTargets += createMacTarget(false)
         }
@@ -127,12 +134,15 @@ class GenerateLibs extends DefaultTask {
             BuildExecutor.executeAnt(jniDir + '/build-windows64.xml', commonParams)
         if (forLinux)
             BuildExecutor.executeAnt(jniDir + '/build-linux64.xml', commonParams)
+        if (forAndroid) // Contrary to the name, this builds all four ABIs (arm64, arm, x86, x86_64)
+            BuildExecutor.executeAnt(jniDir + '/build-android32.xml', commonParams)
         if (forMac)
             BuildExecutor.executeAnt(jniDir + '/build-macosx64.xml', commonParams)
         if (forMacArm64)
             BuildExecutor.executeAnt(jniDir + '/build-macosxarm64.xml', commonParams)
-
-        BuildExecutor.executeAnt(jniDir + '/build.xml', '-v', 'pack-natives')
+        // Exclude android because android packages into aar, not jar
+        if (!forAndroid)
+            BuildExecutor.executeAnt(jniDir + '/build.xml', '-v', 'pack-natives')
 
         if (forWindows)
             checkLibExist("windows64/imgui-java64.dll")
