@@ -4,7 +4,6 @@ import imgui.ImVec2;
 import imgui.binding.annotation.ArgValue;
 import imgui.binding.annotation.BindingMethod;
 import imgui.binding.annotation.BindingSource;
-import imgui.binding.annotation.ExcludedSource;
 import imgui.binding.annotation.OptArg;
 import imgui.binding.annotation.ReturnValue;
 import imgui.extension.imguifiledialog.callback.ImGuiFileDialogPaneFun;
@@ -15,7 +14,6 @@ import java.util.HashMap;
  * ImGuiFileDialog extension for ImGui
  * Repo: <a href="https://github.com/aiekick/ImGuiFileDialog">https://github.com/aiekick/ImGuiFileDialog</a>
  */
-@ExcludedSource
 @BindingSource(callPtr = "ImGuiFileDialog::Instance()", callOperator = "->")
 public final class ImGuiFileDialog {
     private ImGuiFileDialog() {

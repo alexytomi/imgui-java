@@ -1,4 +1,3 @@
-/*
 import imgui.extension.imguifiledialog.ImGuiFileDialog;
 import imgui.extension.imguifiledialog.callback.ImGuiFileDialogPaneFun;
 import imgui.extension.imguifiledialog.flag.ImGuiFileDialogFlags;
@@ -72,4 +71,3 @@ public class ExampleImGuiFileDialog {
         ImGui.end();
     }
 }
-*/
